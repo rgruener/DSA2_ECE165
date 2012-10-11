@@ -24,6 +24,10 @@ int heap::insert(const std::string &id, int key, void *pv /*= NULL*/){
     this->data[filled].pData = pv;
     this->mapping->setPointer(data[filled].id, &data[filled]);
     percolateUp(filled);
+    int i;
+    for (i=1; i<=filled; i++){
+        std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
+    }
     return 0;
 }
 
@@ -35,6 +39,10 @@ int heap::setKey(const std::string &id, int key){
         int pos = getPos(pn);
         percolateUp(pos);
         percolateDown(pos);
+    int i;
+    for (i=1; i<=filled; i++){
+        std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
+    }
         return 0;
     } else {
         return 1;
@@ -58,6 +66,10 @@ int heap::deleteMin(std::string *pId /*= NULL*/, int *pKey /*= NULL*/, void *ppD
     this->data[1] = this->data[this->filled--]; // place last element at top of heap
     this->mapping->setPointer(this->data[1].id, &this->data[1]); // change pointer in hash table
     percolateDown(1);
+    int i;
+    for (i=1; i<=filled; i++){
+        std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
+    }
     return 0;
 }
 
@@ -84,7 +96,7 @@ int heap::remove(const std::string &id, int *pKey /*= NULL*/, void *ppData /*= N
 
 void heap::percolateUp(int posCur){
     node tmp = this->data[posCur];
-    while (posCur >= 1 && tmp.key < this->data[posCur/2].key){
+    while (posCur > 1 && tmp.key < this->data[posCur/2].key){
         this->data[posCur] = this->data[posCur/2];
         this->mapping->setPointer(this->data[posCur].id, &this->data[posCur]); // switch pointer in hash table
         posCur /= 2;
