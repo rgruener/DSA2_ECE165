@@ -13,21 +13,22 @@ heap::heap(int capacity){
 }
 
 int heap::insert(const std::string &id, int key, void *pv /*= NULL*/){
-    if (this->filled+1 >= this->capacity){
+    if (this->filled >= this->capacity){
         return 1; // Heap already filled to capacity
-    } else if (this->mapping->insert(id) == 1){
+    } else if (this->mapping->contains(id) == 1){
         return 2; // Node with given id already in heap
     }
     this->filled++;
     this->data[filled].id = id;
     this->data[filled].key = key;
     this->data[filled].pData = pv;
-    this->mapping->setPointer(data[filled].id, &data[filled]);
+    this->mapping->insert(data[filled].id, &data[filled]);
     percolateUp(filled);
     int i;
     for (i=1; i<=filled; i++){
         std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
     }
+    this->mapping->print();
     return 0;
 }
 
@@ -43,6 +44,7 @@ int heap::setKey(const std::string &id, int key){
     for (i=1; i<=filled; i++){
         std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
     }
+    this->mapping->print();
         return 0;
     } else {
         return 1;
@@ -70,6 +72,7 @@ int heap::deleteMin(std::string *pId /*= NULL*/, int *pKey /*= NULL*/, void *ppD
     for (i=1; i<=filled; i++){
         std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
     }
+    this->mapping->print();
     return 0;
 }
 

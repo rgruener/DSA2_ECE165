@@ -27,7 +27,7 @@ int hashTable::insert(const std::string &key, void *pv /*= NULL*/){
         if (index + 1 >= this->capacity){
             index = 0;
         } else {
-        index++;
+            index++;
         }
     }
     data[index].isOccupied = true;
@@ -121,9 +121,11 @@ bool hashTable::rehash(){
         data[i].isOccupied = false; // Clear out new data vector
     }
 
+    this->filled=0;
     for (int i=0; i < old_data.size(); i++){
-        if (old_data[i].isOccupied){
+        if (old_data[i].isOccupied && !old_data[i].isDeleted){
             this->insert(old_data[i].key, old_data[i].pv);
+            this->filled++;
         }
     }
     return true;
@@ -138,4 +140,12 @@ unsigned int hashTable::getPrime(int size){
         }
     }
     return primes[i];
+}
+
+void hashTable::print(){
+    for (int i=0; i < data.size(); i++){
+        if (data[i].isOccupied && !data[i].isDeleted){
+            std::cout << "key: " << data[i].key << " - pointer: " << data[i].pv << std::endl;
+        }
+    }
 }
