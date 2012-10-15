@@ -31,6 +31,7 @@ int hashTable::insert(const std::string &key, void *pv /*= NULL*/){
         }
     }
     data[index].isOccupied = true;
+    data[index].isDeleted = false;
     data[index].key = key;
     if (pv){
         data[index].pv = pv;
@@ -140,12 +141,4 @@ unsigned int hashTable::getPrime(int size){
         }
     }
     return primes[i];
-}
-
-void hashTable::print(){
-    for (int i=0; i < data.size(); i++){
-        if (data[i].isOccupied && !data[i].isDeleted){
-            std::cout << "key: " << data[i].key << " - pointer: " << data[i].pv << std::endl;
-        }
-    }
 }

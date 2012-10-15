@@ -2,7 +2,6 @@
 // ECE164 Data Structures and Algorithms II
 // heap.cpp
 
-#include <iostream>
 #include "heap.h"
 
 heap::heap(int capacity){
@@ -24,11 +23,6 @@ int heap::insert(const std::string &id, int key, void *pv /*= NULL*/){
     this->data[filled].pData = pv;
     this->mapping->insert(data[filled].id, &data[filled]);
     percolateUp(filled);
-    int i;
-    for (i=1; i<=filled; i++){
-        std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
-    }
-    this->mapping->print();
     return 0;
 }
 
@@ -40,11 +34,6 @@ int heap::setKey(const std::string &id, int key){
         int pos = getPos(pn);
         percolateUp(pos);
         percolateDown(pos);
-    int i;
-    for (i=1; i<=filled; i++){
-        std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
-    }
-    this->mapping->print();
         return 0;
     } else {
         return 1;
@@ -68,11 +57,6 @@ int heap::deleteMin(std::string *pId /*= NULL*/, int *pKey /*= NULL*/, void *ppD
     this->data[1] = this->data[this->filled--]; // place last element at top of heap
     this->mapping->setPointer(this->data[1].id, &this->data[1]); // change pointer in hash table
     percolateDown(1);
-    int i;
-    for (i=1; i<=filled; i++){
-        std::cout << "Index: " << i << " - " << data[i].key << " - " << data[i].id << std::endl;
-    }
-    this->mapping->print();
     return 0;
 }
 
@@ -123,7 +107,7 @@ void heap::percolateDown(int posCur){
                 this->data[right].key < this->data[left].key){
             min = right;
         }
-        if (min != posCur){ // if one of children is less than parent
+        if (min != posCur){ // if one of children is less than parent, need to switch
             this->data[posCur] = this->data[min];
             this->mapping->setPointer(this->data[posCur].id, &this->data[posCur]); // switch pointer in hash table
             posCur = min;
