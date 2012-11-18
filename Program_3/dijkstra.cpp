@@ -16,18 +16,28 @@ using namespace std;
 
 void loadGraph(ifstream& graphfile, graph &myGraph) {
     string line, vertex_1, vertex_2;
+    int index1, index2, newline;
     int cost;
 
-    while (graphfile >> vertex_1 >> vertex_2 >> cost){
-        //cout << "Your edge is from " << vertex_1 << " to " << vertex_2 << " with a cost of " << cost << endl;
+    //while (graphfile >> vertex_1 >> vertex_2 >> cost){
+        ////cout << "Your edge is from " << vertex_1 << " to " << vertex_2 << " with a cost of " << cost << endl;
+        //myGraph.insertEdge(vertex_1, vertex_2, cost);
+    //}
+    while (getline(graphfile, line)){
+        newline = line.find_last_not_of("\n");
+        if (newline != string::npos){
+            line.erase(newline+1);
+        }
+        if (!line.length()){
+            continue;
+        }
+        index1 = line.find(' ');
+        index2 = line.rfind(' ');
+        vertex_1 = line.substr(0, index1);
+        vertex_2 = line.substr(index1+1, index2-index1-1);
+        cost = atoi(line.substr(index2+1).c_str());
         myGraph.insertEdge(vertex_1, vertex_2, cost);
     }
-    //while (getline(graphfile, line)){
-        //newline = line.find_last_not_of("\n");
-        //if (newline != string::npos){
-            //line.erase(newline+1);
-        //}
-        
 }
 
 int main() {
@@ -47,7 +57,6 @@ int main() {
         cerr << "Error while opening " << graph_fname << endl;
         exit (1);
     }
-    //myGraph.printGraph();
     while (!valid_start){
         cout << "Enter a valid vertex id for the starting vertex: ";
         getline(cin, start);

@@ -8,6 +8,8 @@
 #include "graph.h"
 #include "heap.h"
 
+#define INFINITY std::numeric_limits<int>::max()
+
 graph::graph(int capacity /*= 100*/){
     vertices = new hashTable(capacity*2);
 }
@@ -47,7 +49,7 @@ bool graph::insertEdge(std::string src_vertex, std::string dest_vertex, int cost
 }
 
 int graph::dijkstra(std::string source_vertex){
-    heap vertices(this->vertex_list.size());
+    heap vertices(this->vertex_list.size()+1);
     graphVertex *v;
     int new_dist;
 
@@ -56,7 +58,7 @@ int graph::dijkstra(std::string source_vertex){
         if ((*it)->vertex_id == source_vertex){
             (*it)->distance = 0;
         } else {
-            (*it)->distance = std::numeric_limits<int>::max();
+            (*it)->distance = INFINITY;
         }
         (*it)->previous = NULL;
         vertices.insert((*it)->vertex_id, (*it)->distance, (*it));
@@ -67,7 +69,7 @@ int graph::dijkstra(std::string source_vertex){
         v->known = true;
         std::list<graphEdge>::iterator it;
         for (it=v->adjacency_list.begin(); it!=v->adjacency_list.end(); it++){
-            if (v->distance == std::numeric_limits<int>::max()){
+            if (v->distance == INFINITY){
                 continue; // Continue if vertex cant be reached from source
             }
             new_dist = v->distance + (*it).cost;
@@ -84,7 +86,7 @@ void graph::printDijkstra(std::ofstream& outfile){
     std::list<graphVertex *>::iterator it;
     for (it=this->vertex_list.begin(); it!=vertex_list.end(); it++){
         outfile << (*it)->vertex_id << ": ";
-        if ((*it)->distance == std::numeric_limits<int>::max()){
+        if ((*it)->distance == INFINITY){
             outfile << "NO PATH" << std::endl;
         } else {
             outfile << (*it)->distance << " [";
