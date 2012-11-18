@@ -14,15 +14,16 @@ graph::graph(int capacity /*= 100*/){
     vertices = new hashTable(capacity*2);
 }
 
-bool graph::insertVertex(std::string vertex_id){
+graph::graphVertex * graph::insertVertex(std::string vertex_id){
     if (this->vertices->contains(vertex_id)){
-        return false;
+        return static_cast<graphVertex *> (this->vertices->getPointer(vertex_id));
+;
     }
     graphVertex *new_vertex = new graphVertex();
     new_vertex->vertex_id = vertex_id;
     this->vertices->insert(vertex_id, new_vertex);
     this->vertex_list.push_back(new_vertex);
-    return true;
+    return new_vertex;
 }
 
 bool graph::containsVertex(std::string vertex_id){
@@ -33,12 +34,10 @@ bool graph::insertEdge(std::string src_vertex, std::string dest_vertex, int cost
     bool b1, b2;
     graphVertex *src, *dest;
     
-    this->insertVertex(src_vertex);
-    this->insertVertex(dest_vertex);
+    src = this->insertVertex(src_vertex);
+    dest = this->insertVertex(dest_vertex);
 
-    src = static_cast<graphVertex *> (this->vertices->getPointer(src_vertex, &b1));
-    dest = static_cast<graphVertex *> (this->vertices->getPointer(dest_vertex, &b2));
-    if ((b1 && b2) == false){
+    if (src == NULL || dest == NULL){
         return false;
     }
     graphEdge new_edge;
