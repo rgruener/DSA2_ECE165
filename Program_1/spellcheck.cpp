@@ -1,5 +1,5 @@
 // Robert Gruener
-// ECE164 Data Structures and Algorithms II
+// ECE165 Data Structures and Algorithms II
 // spellcheck.cpp
 
 /* 
