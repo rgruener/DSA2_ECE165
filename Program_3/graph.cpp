@@ -17,11 +17,12 @@ graph::graph(int capacity /*= 100*/){
 graph::graphVertex * graph::insertVertex(std::string vertex_id){
     if (this->vertices->contains(vertex_id)){
         return static_cast<graphVertex *> (this->vertices->getPointer(vertex_id));
-;
     }
     graphVertex *new_vertex = new graphVertex();
     new_vertex->vertex_id = vertex_id;
-    this->vertices->insert(vertex_id, new_vertex);
+    if (this->vertices->insert(vertex_id, new_vertex) != 0){
+        std::cerr << "Insert to hash table failed on vertex: " << vertex_id << std::endl;
+    }
     this->vertex_list.push_back(new_vertex);
     return new_vertex;
 }
@@ -48,7 +49,7 @@ bool graph::insertEdge(std::string src_vertex, std::string dest_vertex, int cost
 }
 
 int graph::dijkstra(std::string source_vertex){
-    heap vertices(this->vertex_list.size()+1);
+    heap heap_vertices(this->vertex_list.size()+1);
     graphVertex *v;
     int new_dist;
 
@@ -60,21 +61,21 @@ int graph::dijkstra(std::string source_vertex){
             (*it)->distance = INFINITY;
         }
         (*it)->previous = NULL;
-        vertices.insert((*it)->vertex_id, (*it)->distance, (*it));
+        heap_vertices.insert((*it)->vertex_id, (*it)->distance, (*it));
         (*it)->known=false;
     }
 
-    while (vertices.deleteMin(NULL, NULL, &v) != 1){
+    while (heap_vertices.deleteMin(NULL, NULL, &v) != 1){
         v->known = true;
         std::list<graphEdge>::iterator it;
+        if (v->distance == INFINITY){
+            continue; // Continue if vertex cant be reached from source
+        }
         for (it=v->adjacency_list.begin(); it!=v->adjacency_list.end(); it++){
-            if (v->distance == INFINITY){
-                continue; // Continue if vertex cant be reached from source
-            }
             new_dist = v->distance + (*it).cost;
             if (new_dist < ((*it).destination)->distance){
                 ((*it).destination)->distance = new_dist;
-                vertices.setKey(((*it).destination)->vertex_id, new_dist);
+                heap_vertices.setKey(((*it).destination)->vertex_id, new_dist);
                 ((*it).destination)->previous = v;
             }
         }

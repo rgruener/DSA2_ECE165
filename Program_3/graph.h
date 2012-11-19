@@ -37,7 +37,9 @@ class graph {
         void printPath(std::ofstream& outfile, graphVertex *v);
 
     public:
-
+        // Constructor, capacity is only for initial size of 
+        // hash table, which will increase as you insert more 
+        // nodes.
         graph(int capacity=100);
 
         // Add new vertex to graph returns true
@@ -60,7 +62,7 @@ class graph {
         // with vertex_id of start
         int dijkstra(std::string start);
 
-        // Print results of Dijkstra's Algorithm to stream outfile
+        // Print results of Dijkstra's Algorithm to ofstream outfile
         void printDijkstra(std::ofstream& outfile);
 
 

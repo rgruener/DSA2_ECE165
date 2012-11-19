@@ -19,10 +19,6 @@ void loadGraph(ifstream& graphfile, graph &myGraph) {
     int index1, index2, newline;
     int cost;
 
-    //while (graphfile >> vertex_1 >> vertex_2 >> cost){
-        ////cout << "Your edge is from " << vertex_1 << " to " << vertex_2 << " with a cost of " << cost << endl;
-        //myGraph.insertEdge(vertex_1, vertex_2, cost);
-    //}
     while (getline(graphfile, line)){
         newline = line.find_last_not_of("\n");
         if (newline != string::npos){
@@ -75,6 +71,5 @@ int main() {
     } else {
         cerr << "Error while opening " << out_fname << endl;
     }
-
     exit (1);
 }

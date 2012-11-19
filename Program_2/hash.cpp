@@ -14,12 +14,12 @@ hashTable::hashTable(int size /*= 0*/){
 }
 
 int hashTable::insert(const std::string &key, void *pv /*= NULL*/){
-    int index = hash(key);
     if (this->filled >= this->capacity / 2){
         if (!this->rehash()){
             return 2;
         }
     }
+    int index = hash(key);
     while (data[index].isOccupied == true){
         if (data[index].key == key && !data[index].isDeleted){
             return 1;
