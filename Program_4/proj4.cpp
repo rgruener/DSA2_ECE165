@@ -91,7 +91,6 @@ int main(){
                     is_merge[i][j] = ans;
                 }
             }
-            print_matrix(word_1, word_2, pos_merge, is_merge);
             if (is_merge[word_2.length()][word_1.length()]){
                 i = word_2.length();
                 j = word_1.length();
