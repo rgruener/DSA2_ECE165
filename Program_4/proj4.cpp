@@ -91,10 +91,11 @@ int main(){
                     is_merge[i][j] = ans;
                 }
             }
+            print_matrix(word_1, word_2, pos_merge, is_merge);
             if (is_merge[word_2.length()][word_1.length()]){
                 i = word_2.length();
                 j = word_1.length();
-                while (j>=0 and i>= 0){
+                while (j>0 and i>= 0){
                     if (is_merge[i][j] and (i == 0 or !is_merge[i-1][j])){
                         pos_merge[i+j-1] = toupper(pos_merge[i+j-1]);
                         j--;
